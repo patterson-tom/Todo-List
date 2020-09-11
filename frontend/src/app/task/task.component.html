@@ -1,0 +1,52 @@
+<div *ngIf="edit;then edit_view else show_view"></div>
+
+<ng-template #edit_view>
+  <mat-card class="task-card" style="background-color: #EEEEEE; outline-style: outset; outline-color: #AAAAAA; outline-width: 5px; width: 1000px">
+    <mat-card-content>
+      
+      <mat-form-field style="display:inline-block;" appearance="fill">
+        <mat-label>Task Name</mat-label>
+        <input matInput (blur)="task.title=$event.target.value" value={{task.title}} style="line-height: 1" cols ="50" maxlength="50">
+      </mat-form-field>
+    
+      <mat-form-field style="display:inline-block; position: absolute; right:2%;" appearance="fill">
+        <mat-label>Task Deadline</mat-label>
+        <input matInput [matDatepicker]="picker" (dateChange) = "dateChanged($event)" [value]="task.deadline">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field style="width: 100%" appearance="fill">
+        <mat-label>Task Description</mat-label>
+        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" (blur)="task.content=$event.target.value" value={{task.content}} style="line-height: 1"></textarea>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button (click)="editClicked()" mat-button>SAVE</button>
+      </mat-card-actions>
+
+    </mat-card-content>
+  </mat-card>
+</ng-template>
+
+<ng-template #show_view>
+  <mat-card  class="task-card" style="outline-style: outset; outline-width: 5px; width: 1000px" [style.outline-color]="task.complete ? '#00FF00' : (isOverdue() ? '#FF0000' : '#EEEEEE')">
+    <mat-card-content>
+
+      <mat-card-title style="display:inline-block;">{{task.title}}</mat-card-title>
+      <p style="display:inline-block; position: absolute; right:2%;" ><strong>DEADLINE: </strong> {{getDeadlineString()}}</p>
+      <p style="margin-top:15px; max-width: 100%; word-wrap: break-word; line-height:1">{{task.content}}</p>
+      
+      <mat-card-actions>
+        <button (click)="editClicked()" mat-button>EDIT</button>
+        <button (click)="delete()" mat-button>DELETE</button>
+        <button (click)="addSubtask()" mat-button>ADD SUBTASK</button>
+        <button *ngIf="!task.complete" color='primary' (click)="completeTask()" mat-stroked-button>COMPLETE</button>
+        <button *ngIf="task.complete" color='primary' (click)="uncompleteTask()" mat-stroked-button>UNCOMPLETE</button>
+      </mat-card-actions>
+
+    </mat-card-content>
+  </mat-card>
+</ng-template>
+
+<app-task-list #sub_task_list style = "position: relative; left:30px" [parentID]="this.task['_id']"></app-task-list>

@@ -1,0 +1,10 @@
+app-toolbar {
+    width: 100vw;
+    height: 68px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 5px solid #bbbbbb;
+    align-items: center;
+}

@@ -1,0 +1,20 @@
+<app-toolbar></app-toolbar>
+
+<button mat-raised-button color="primary" aria-label="Add task" (click)="main_task_list.add_task()" style="margin-top: 25px">
+    <mat-icon>add</mat-icon>
+    Add Task
+</button>
+
+<mat-form-field appearance="fill" style="width: 300px; margin-left: 625px">
+    <mat-label>Sort By</mat-label>
+    <mat-select (selectionChange)="main_task_list.task_service.change_sorting_method($event.value)">
+        <mat-option value="Soonest">Due Date (Soonest first)</mat-option>
+        <mat-option value="Least Soonest">Due Date (Soonest last)</mat-option>
+        <mat-option value="Completed">Completion Status (Completed first)</mat-option>
+        <mat-option value="Uncompleted">Completion Status (Completed last)</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<app-task-list #main_task_list></app-task-list>
+
+<br>
